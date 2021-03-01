@@ -1,0 +1,11 @@
+.wow-modal-overlay {
+ z-index: 1 !important;
+}
+
+li.clearfix .wow-modal-button-container {
+  float: right;
+}
+#shop_search_result .tab {
+ font-size: 20px;
+ font-weight: bold; 
+}
