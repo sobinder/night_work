@@ -495,7 +495,7 @@
               console.log('this', $(this));
               $( "#single-product-shop" ).trigger( "click" );
             });
-            
+
 		},
 
 		/**
@@ -534,13 +534,13 @@
 					_this.processForm(e);
 				});
 			}
-            var autocomplete = new google.maps.places.Autocomplete(
-                /** @type {HTMLInputElement} */$('#' + this.settings.addressID)[0],
-                { types: ['geocode'] });
-              google.maps.event.addListener(autocomplete, 'place_changed', function(e) {
-                _this.processForm(e);
-                //return false;
-            });
+            // var autocomplete = new google.maps.places.Autocomplete(
+            //     /** @type {HTMLInputElement} */$('#' + this.settings.addressID)[0],
+            //     { types: ['geocode'] });
+            //   google.maps.event.addListener(autocomplete, 'place_changed', function(e) {
+            //     _this.processForm(e);
+            //     //return false;
+            // });
 			// Reset button trigger
 			if ($('.bh-sl-reset').length && $('#' + this.settings.mapID).length) {
 				$(document).on('click.' + pluginName, '.bh-sl-reset', function () {
@@ -567,11 +567,13 @@
 				southWest = '',
 				formattedAddress = '';
 
+			var orgLatLng = {'lat':lat,'lng':lng};
+
 			// Define extra geocode result info
 			if (typeof geocodeData !== 'undefined' && typeof geocodeData.geometry.bounds !== 'undefined') {
 				formattedAddress = geocodeData.formatted_address;
 				northEast = JSON.stringify( geocodeData.geometry.bounds.getNorthEast() );
-				southWest = JSON.stringify( geocodeData.geometry.bounds.getSouthWest() );
+				northEast = JSON.stringify( geocodeData.geometry.bounds.getSouthWest() );
 			}
 
 			// Before send callback
@@ -585,7 +587,6 @@
 				if( dataTypeRead === 'xml' ) {
 					return $.parseXML(_this.settings.dataRaw);
 				}
-
 				// JSON
 				else if (dataTypeRead === 'json') {
 					if (Array.isArray && Array.isArray(_this.settings.dataRaw)) {
@@ -598,6 +599,9 @@
                                 if (northEast !== "" && southWest !== "") {
                                   	var jsonNorthEast = JSON.parse(northEast);
                                     var jsonSouthWest = JSON.parse(southWest);
+
+									console.log('Get Distance:' + _this.getDistance(orgLatLng,_this.settings.dataRaw[i]));
+
                                     if (parseFloat(_this.settings.dataRaw[i].lat) > jsonSouthWest.lat
                                         && parseFloat(_this.settings.dataRaw[i].lng) > jsonSouthWest.lng
                                         && parseFloat(_this.settings.dataRaw[i].lat) < jsonNorthEast.lat
@@ -609,16 +613,19 @@
                                       	returnArray.push(_this.settings.dataRaw[i]);
                                     }
                                 }
-                                
+
                             }
-                          	console.log('returnArray', returnArray);
+
+                            console.log(returnArray.length );
+                            console.log("Line 618: "+ returnArray );
+
                           	if (returnArray.length === 0) {
                                 var shortestPoint = _this.settings.dataRaw[0];
                                 var currentPoint = {
                                     lat: lat,
                                     lng: lng
                                 };
-                              	console.log('_this.settings.dataRaw', _this.settings.dataRaw);
+                              	//console.log('_this.settings.dataRaw', _this.settings.dataRaw);
                                 for (var i = 0; i < _this.settings.dataRaw.length - 1; i++) {
                                     _this.settings.dataRaw[i].distance = _this.haversine_distance(currentPoint, _this.settings.dataRaw[i]);
                                     // if (_this.haversine_distance(currentPoint, shortestPoint) > _this.haversine_distance(currentPoint, _this.settings.dataRaw[i + 1])) {
@@ -630,10 +637,28 @@
                                 returnArray.push(_this.settings.dataRaw[1]);
                                 returnArray.push(_this.settings.dataRaw[2]);
                               	console.log('returnArray1', returnArray);
+                              	//exit;
                             }
+                            // custom fix to get more results
+                            if( returnArray.length <= 1 ){
+                            	var returnArray2 = [];
+                            	for (var i = 0; i < _this.settings.dataRaw.length; i++) {
+	                                if (northEast !== "" && southWest !== "") {
+	                                    if ( parseFloat(_this.settings.dataRaw[i].lat)+Number(1) > jsonSouthWest.lat
+	                                        && parseFloat(_this.settings.dataRaw[i].lng)+Number(1) > jsonSouthWest.lng
+	                                        && parseFloat(_this.settings.dataRaw[i].lat) < jsonNorthEast.lat+Number(1)
+	                                        && parseFloat(_this.settings.dataRaw[i].lng) < jsonNorthEast.lng+Number(1) ) {
+
+	                                        returnArray2.push(_this.settings.dataRaw[i]);
+	                                    }
+	                                }
+	                            }
+	                            return returnArray2;
+                            }
+                            // ends here
                             return returnArray;
                         }
-                      	
+
 					}
 					else if (typeof _this.settings.dataRaw === 'string') {
 						return JSON.parse(_this.settings.dataRaw);
@@ -708,7 +733,7 @@
             var rlat2 = parseFloat(mk2.lat) * (Math.PI/180); // Convert degrees to radians
             var difflat = rlat2-rlat1; // Radian difference (latitudes)
             var difflon = (parseFloat(mk2.lng) - mk1.lng) * (Math.PI/180); // Radian difference (longitudes)
-    
+
             var d = 2 * R * Math.asin(Math.sqrt(Math.sin(difflat/2)*Math.sin(difflat/2)+Math.cos(rlat1)*Math.cos(rlat2)*Math.sin(difflon/2)*Math.sin(difflon/2)));
             return d;
         },
@@ -761,9 +786,8 @@
 				else if (this.settings.fullMapStart === true) {
 					if ((this.settings.querystringParams === true && this.getQueryString(this.settings.addressID)) || (this.settings.querystringParams === true && this.getQueryString(this.settings.searchID)) || (this.settings.querystringParams === true && this.getQueryString(this.settings.maxDistanceID))) {
                       _this.writeDebug('Using Query String');
-//                      $('#' + this.settings.formID ).trigger( "submit" );
-
-//                      console.log('address:', $('#' + this.settings.addressID).val());
+                     // $('#' + this.settings.formID ).trigger( "submit" );
+                     // console.log('address:', $('#' + this.settings.addressID).val());
 						this.processForm(null);
                       doAutoGeo = false; // No need for additional processing
 					}
@@ -835,7 +859,7 @@
 		 * Geocode function used to geocode the origin (entered location)
 		 */
 		googleGeocode: function (thisObj) {
-			thisObj.writeDebug('googleGeocode',arguments);
+			//thisObj.writeDebug('googleGeocode',arguments);
 			var geocoder = new google.maps.Geocoder();
 			this.geocode = function (request, callbackFunction) {
 				geocoder.geocode(request, function (results, status) {
@@ -1365,6 +1389,7 @@
 			this.writeDebug('listSetup',arguments);
 			// Define the location data
 			var locations = this._defineLocationData(marker, storeStart, page);
+			//console.log(locations);
 
 			// Set up the list template with the location data
 			var listHtml = listTemplate(locations);
@@ -1736,7 +1761,7 @@
 		 * @param e {Object} event
 		 */
 		processForm: function (e) {
-			this.writeDebug('processForm',arguments);
+			//this.writeDebug('processForm',arguments);
 			var _this = this,
 				distance = null,
 				geocodeRestrictions = {},
@@ -1744,7 +1769,7 @@
 				$searchInput = $('#' + this.settings.searchID),
 				$distanceInput = $('#' + this.settings.maxDistanceID),
 				region = '';
-
+				//console.log("$distanceInput", $distanceInput);
 			// Stop the form submission
 			if (typeof e !== 'undefined' && e !== null) {
 				e.preventDefault();
@@ -1823,7 +1848,6 @@
 				this._start();
 			}
 			else if (addressInput !== '') {
-
 				// Geocode the origin if needed
 				if (typeof originalOrigin !== 'undefined' && typeof olat !== 'undefined' && typeof olng !== 'undefined' && (addressInput === originalOrigin)) {
 					// Run the mapping function
@@ -1853,6 +1877,7 @@
 							mappingObj.distance = distance;
 							mappingObj.geocodeResult = data.geocodeResult;
 							_this.mapping(mappingObj);
+							console.log("mappingObj", mappingObj);
 						} else {
 							// Unable to geocode
 							_this.notify(_this.settings.addressErrorAlert);
@@ -1865,7 +1890,6 @@
 				if ( addressInput === '' ) {
 					delete mappingObj.origin;
 				}
-
 				mappingObj.name = searchInput;
 				_this.mapping(mappingObj);
 			}
@@ -2832,7 +2856,14 @@
 							locationData[key] = obj[key];
 						}
 					}
-
+					// console.clear();
+					// console.log('++++++++++++++++++++++++');
+					// console.log(locationData);
+					// console.log(orig_lat);
+					// console.log(orig_lng);
+					// console.log(origin);
+					// console.log(maxDistance);
+					// console.log('++++++++++++++++++++++++');
 					_this.locationsSetup(locationData, orig_lat, orig_lng, origin, maxDistance);
 
 					i++;
@@ -3118,10 +3149,10 @@
 			// Create the links that focus on the related marker
 			var locList =  $('.' + _this.settings.locationList + ' ul');
 			locList.empty();
-          
+
           	//console.log("getUrlParameter:", _this.getUrlParameter("bh-sl-address"));
 			//console.log("val:", $("#bh-sl-address").val());
-          	
+
           	if ((typeof _this.getUrlParameter("bh-sl-address")) !== 'undefined' && $("#bh-sl-address").val() == '') {
 				$("#bh-sl-address").val(_this.getUrlParameter("bh-sl-address").split("+").join(" "));
 			}
@@ -3177,7 +3208,7 @@
 				_this.settings.callbackFilters.call(this, filters, mappingObject);
 			}
 		},
-      	
+
       	getUrlParameter: function getUrlParameter(sParam) {
             var sPageURL = window.location.search.substring(1),
                 sURLVariables = sPageURL.split('&'),

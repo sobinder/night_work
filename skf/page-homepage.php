@@ -35,12 +35,12 @@ get_header(); ?>
             </a>
             </div>
 			<?php endforeach; ?>
-            
+
             <?php wp_reset_query(); ?>
-            
-            
-            
-            
+
+
+
+
 </div>
 
 
@@ -61,7 +61,7 @@ get_header(); ?>
 <section class="location-finder text-center clearfix" style="padding:0; padding-bottom:30px;">
 <div class="container" style="max-width:1500px;">
 <div class="row justify-content-center">
-<div class="col-md-12 text-center"> 
+<div class="col-md-12 text-center">
 <div class="title star blue">
 <h2 style="text-align:center !important;">Find A <strong>Showroom</strong> </h2>
 </div></div>
@@ -71,14 +71,15 @@ get_header(); ?>
 	</div>
 
 	<div class="bh-sl-form-container">
-		<form id="bh-sl-user-location" method="get" action="<?php bloginfo('url'); ?>/locations">
+		<!-- id="bh-sl-user-location" -->
+		<form  method="get" action="<?php bloginfo('url'); ?>/locations">
                                 <div class="form-input address-input form-field clearfix" data-toggle="tooltip" data-placement="top" title="Please type the starting address to enable directions" style="position:relative;max-width:850px;">
                                     <input type="text" id="bh-sl-address" name="bh-sl-address" placeholder="Enter a city and state or postal code"/>
 <button id="bh-sl-submit" type="submit">Submit</button>
                                 </div>
 
 		</form>
-		
+
 	</div>
 </div>
 
@@ -108,14 +109,14 @@ get_header(); ?>
 						<?php the_field('products_title');?>
                         </div>
 					</div>
-					
+
 					<div class="col-md-12">
-                    
-                    
+
+
                     <ul class="featured-slider">
-                    
-                   
-                    <?php 
+
+
+                    <?php
 $posts = get_field('select_featured_products');
 if( $posts ): ?>
     <?php foreach( $posts as $post): // variable must be called $post (IMPORTANT) ?>
@@ -131,7 +132,7 @@ if( $posts ): ?>
 								<p><?php $content = get_the_excerpt(); echo wp_trim_words( $content , '8' ); ?></p>
 								</a>
 							</li>
-       
+
 <?php endforeach; ?>
 
 </ul>
@@ -141,18 +142,18 @@ if( $posts ): ?>
 
 
 
-                    	
+
 					</div>
 
 				</div>
 			</div>
-            
-            
-        
-        
+
+
+
+
 		</section>
 
-		
+
 
 
 <div class="clearfix text-center featured-videos">
@@ -163,8 +164,8 @@ if( $posts ): ?>
 </div>
 <div class="col-sm-12 clearfix">
 					<div class="stm-medias-unit clearfix">
-                    
-                    
+
+
                     <?php
 			global $post;
 			$args = array( 'posts_per_page' => 100, 'post_type'=> 'videos');
@@ -177,10 +178,10 @@ if( $posts ): ?>
 else {echo 'https://img.youtube.com/vi/' .$video. '/3.jpg'; }?>"></a>
             </div>
 			<?php endforeach; ?>
-            
+
             <?php wp_reset_query(); ?>
-            
-   
+
+
 </div></div>
 
 </div>
@@ -195,10 +196,10 @@ else {echo 'https://img.youtube.com/vi/' .$video. '/3.jpg'; }?>"></a>
 
 
 
-<?php if (is_front_page() or is_blog() or is_shop()) { ?>   
+<?php if (is_front_page() or is_blog() or is_shop()) { ?>
 
 
-                
+
 <?php } else { ?>
 <section class="king-fireworks clearfix bg-image">
 			<div class="container">
@@ -247,17 +248,17 @@ else {echo 'https://img.youtube.com/vi/' .$video. '/3.jpg'; }?>"></a>
 
 <div class="col-md-12 clearfix">
 
- 
+
                                  <ul class="special-slider">
-                                 
-                                 
-                                 
+
+
+
 <?php if(get_field('special_offers','option')): ?>
 <?php while(the_repeater_field('special_offers','option')): ?>
 <li>
 								<div>
                                 <a href="<?php the_sub_field('link','option');?>">
-                                <?php if(get_sub_field('image','option')): ?> 
+                                <?php if(get_sub_field('image','option')): ?>
 								<img class="lazy" data-src="<?php the_sub_field('image','option');?>" />
 								<?php endif; ?>
                                 </a>
@@ -271,14 +272,14 @@ else {echo 'https://img.youtube.com/vi/' .$video. '/3.jpg'; }?>"></a>
  <?php endif; ?>
 
 
-                                
 
-                        
-                            
+
+
+
                             </ul>
-                            
+
                             </div>
-                            
+
 
 
 </div>
@@ -319,19 +320,19 @@ else {echo 'https://img.youtube.com/vi/' .$video. '/3.jpg'; }?>"></a>
 <div class="col-8">
 
  <ul class="list-inline d-inline-flex justify-content-around">
- 
- 
+
+
  <?php if(get_field('logos','option')): ?>
 
     <?php while(the_repeater_field('logos','option')): ?>
-   
+
  <li><img class="lazy" data-src="<?php the_sub_field('logo');?>"></li>
-                    
+
 
     <?php endwhile; ?>
  <?php endif; ?>
 
-                                </ul>    
+                                </ul>
 
 </div>
 
@@ -345,5 +346,5 @@ else {echo 'https://img.youtube.com/vi/' .$video. '/3.jpg'; }?>"></a>
 
 
 
-        
+
 <?php get_footer(); ?>

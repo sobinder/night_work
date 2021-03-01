@@ -380,7 +380,7 @@ THE KING'S CORNER.</h2>
 exclusive specials, product information,
 videos and more.</p>
 <div class="clearfix">
-<?php echo do_shortcode('[mc4wp_form id="39"]');?>
+<?php //echo do_shortcode('[mc4wp_form id="39"]');?>
 </div>
 <div class="clearfix social">
 <h2>CONNECT WITH US.</h2>
@@ -416,4 +416,3 @@ videos and more.</p>
 		</section>
 
 <?php } ?>
-

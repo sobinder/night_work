@@ -182,7 +182,7 @@ get_header(); ?>
                                         <?php } ?>
 
 
-                             
+
                                         <p>
                                             <a href="<?php echo $store_link;?>" data-title="<?php the_title();?>" class="btn btn-store btn-loc-list-shop btn-shop-store btn-hidden-<?php the_ID();?>" style="font-size:14px;font-family:Roboto; font-weight:700;color:#fff;background:#0163ce;border: none;border-radius: 5px;height:35px;line-height:35px; padding:0 10; margin-bottom:20px;">Go to Online Store</a>
                                         </p>
@@ -304,7 +304,7 @@ get_header(); ?>
 
 
 
-                        <option value="{{email}}" style="display:none;">{{name}} {{distance}}</option>
+                        <option value="{{name}}" class="hide">{{name}} {{distance}} {{length}}</option>
                         {{/location}}
                     </script>
                     <script id="infowindowTemplate" type="text/x-handlebars-template">
@@ -507,7 +507,7 @@ get_header(); ?>
         });
     }(jQuery));
 </script>
-      
+
 <script>
     jQuery(function($) {
         $(".btn-loc-list-shop").map(function() {

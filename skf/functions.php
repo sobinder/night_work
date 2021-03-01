@@ -178,36 +178,45 @@ function skf_scripts()
 	// wp_enqueue_script('jquery-countdown-plugin', get_template_directory_uri() . '/js/jquery.plugin.min.js');
     // wp_enqueue_script('jquery-countdown', get_template_directory_uri() . '/js/jquery.countdown.min.js');
 	//wp_enqueue_script('slick-js', get_template_directory_uri() . '/js/slick.min.js');
-	// wp_enqueue_script('ticker-js', get_template_directory_uri() . '/js/ticker.js');	
-    wp_enqueue_script('custom-js', get_template_directory_uri() . '/js/custom.js');	
-  	wp_enqueue_script( 'api-key', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyAjflA5-poOeXRpEgwcTjpjOeP25yfs-vM');
+	// wp_enqueue_script('ticker-js', get_template_directory_uri() . '/js/ticker.js');
+    wp_enqueue_script('custom-js', get_template_directory_uri() . '/js/custom.js');
+  	//wp_enqueue_script( 'api-key', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyAjflA5-poOeXRpEgwcTjpjOeP25yfs-vM');
 
     wp_enqueue_script( 'date-picker',   get_template_directory_uri() . '/js/datepicker.js');
 
 
-if ( 'locations' == get_post_type() ) {
-  wp_enqueue_script( 'handlebars',   get_template_directory_uri() . '/store/assets/js/libs/handlebars.min.js');
-  	wp_enqueue_script( 'map-api-custom-js',   get_template_directory_uri() . '/js/custom_map_api.js');
-	wp_enqueue_script( 'store-locator',   get_template_directory_uri() . '/store/assets/js/plugins/storeLocator/jquery.storelocator.js');
-	wp_enqueue_script( 'store-cs',   get_template_directory_uri() . '/store/assets/js/plugins/storeLocator/custom.js');
-  }
-  
-  
-  if ( is_page(134) ) {
-  wp_enqueue_script( 'handlebars',   get_template_directory_uri() . '/store/assets/js/libs/handlebars.min.js');
-  	wp_enqueue_script( 'map-api-custom-js',   get_template_directory_uri() . '/js/custom_map_api.js');
-	wp_enqueue_script( 'store-locator',   get_template_directory_uri() . '/store/assets/js/plugins/storeLocator/jquery.storelocator.js');
-	wp_enqueue_script( 'store-cs',   get_template_directory_uri() . '/store/assets/js/plugins/storeLocator/custom.js');
-  }
-	
-	
-	if ( is_page(1563) ) {
-    wp_enqueue_script( 'handlebars',   get_template_directory_uri() . '/store/assets/js/libs/handlebars.min.js');
-  	wp_enqueue_script( 'map-api-custom-js',   get_template_directory_uri() . '/js/custom_map_api.js');
-	wp_enqueue_script( 'store-locator',   get_template_directory_uri() . '/store/assets/js/plugins/storeLocator/jquery.storelocator.js');
-	wp_enqueue_script( 'store-cs',   get_template_directory_uri() . '/store/assets/js/plugins/storeLocator/customs.js');
-  }
-    
+    // if ( 'locations' == get_post_type() ) {
+    //   wp_enqueue_script( 'handlebars',   get_template_directory_uri() . '/store/assets/js/libs/handlebars.min.js');
+    //   	wp_enqueue_script( 'map-api-custom-js',   get_template_directory_uri() . '/js/custom_map_api.js');
+    // 	wp_enqueue_script( 'store-locator',   get_template_directory_uri() . '/store/assets/js/plugins/storeLocator/jquery.storelocator.js');
+    // 	wp_enqueue_script( 'store-cs',   get_template_directory_uri() . '/store/assets/js/plugins/storeLocator/custom.js');
+    //   }
+
+
+    //   if ( is_page(134) ) {
+    //   wp_enqueue_script( 'handlebars',   get_template_directory_uri() . '/store/assets/js/libs/handlebars.min.js');
+    //   	wp_enqueue_script( 'map-api-custom-js',   get_template_directory_uri() . '/js/custom_map_api.js');
+    // 	wp_enqueue_script( 'store-locator',   get_template_directory_uri() . '/store/assets/js/plugins/storeLocator/jquery.storelocator.js');
+    // 	wp_enqueue_script( 'store-cs',   get_template_directory_uri() . '/store/assets/js/plugins/storeLocator/custom.js');
+    //   }
+
+
+    // 	if ( is_page(1563) ) {
+    //     wp_enqueue_script( 'handlebars',   get_template_directory_uri() . '/store/assets/js/libs/handlebars.min.js');
+    //   	wp_enqueue_script( 'map-api-custom-js',   get_template_directory_uri() . '/js/custom_map_api.js');
+    // 	wp_enqueue_script( 'store-locator',   get_template_directory_uri() . '/store/assets/js/plugins/storeLocator/jquery.storelocator.js');
+    // 	wp_enqueue_script( 'store-cs',   get_template_directory_uri() . '/store/assets/js/plugins/storeLocator/customs.js');
+    //   }
+
+    // Loading for all pages
+    $customJs = is_page(1563) ? 'customs': 'custom';
+    wp_enqueue_script( 'handlebars', get_template_directory_uri() .'/store/assets/js/libs/handlebars.min.js');
+    wp_enqueue_script( 'map-api-custom-js', get_template_directory_uri() .'/js/custom_map_api.js', [''], time(), false );
+    wp_enqueue_script( 'store-locator',  get_template_directory_uri() . '/store/assets/js/plugins/storeLocator/jquery.storelocator.js', ['jquery','google-maps'], time(), false);
+    wp_enqueue_script( 'store-cs', get_template_directory_uri() . '/store/assets/js/plugins/storeLocator/'.$customJs.'.js', ['jquery','handlebars','store-locator'], time(), false);
+
+    // custom test.js
+    //wp_enqueue_script('testing-js', get_template_directory_uri().'/test/testing.js', ['jquery','google-maps' ], time(), false);
 }
 add_action('wp_enqueue_scripts', 'skf_scripts');
 
@@ -319,7 +328,7 @@ function custom_oembed_filter($html, $url, $attr, $post_ID)
 
 /**
 * Implement the Custom Header feature.
- 
+
 require get_template_directory() . '/inc/custom-header.php';
 
 * Custom template tags for this theme.
@@ -360,11 +369,11 @@ function wc_remove_all_quantity_fields( $return, $product ) {
 add_filter( 'woocommerce_is_sold_individually', 'wc_remove_all_quantity_fields', 10, 2 );
 
 add_filter( 'woocommerce_product_single_add_to_cart_text', 'woo_custom_cart_button_text' );    // 2.1 +
- 
+
 function woo_custom_cart_button_text() {
- 
+
         return __( 'Add To Shopping List', 'woocommerce' );
- 
+
 }
 
 
@@ -520,153 +529,153 @@ function the_breadcrumb() {
 
 // Breadcrumbs
 function custom_breadcrumbs() {
-       
+
     // Settings
     $separator          = '&gt;';
     $breadcrums_id      = 'breadcrumbs';
     $breadcrums_class   = 'breadcrumbs';
     $home_title         = 'Home';
-      
+
     // If you have any custom post types with custom taxonomies, put the taxonomy name below (e.g. product_cat)
     $custom_taxonomy    = 'product_cat';
-       
+
     // Get the query & post information
     global $post,$wp_query;
-       
+
     // Do not display on the homepage
     if ( !is_front_page() ) {
-       
+
         // Build the breadcrums
         echo '<ul id="' . $breadcrums_id . '" class="' . $breadcrums_class . '">';
-           
+
         // Home page
         echo '<li class="item-home"><a class="bread-link bread-home" href="' . get_home_url() . '" title="' . $home_title . '">' . $home_title . '</a></li>';
 
-           
+
         if ( is_archive() && !is_tax() && !is_category() && !is_tag() ) {
-              
+
             echo '<li class="item-current item-archive"><strong class="bread-current bread-archive">' . post_type_archive_title($prefix, false) . '</strong></li>';
-              
+
         } else if ( is_archive() && is_tax() && !is_category() && !is_tag() ) {
-              
+
             // If post is a custom post type
             $post_type = get_post_type();
-              
+
             // If it is a custom post type display name and link
             if($post_type != 'post') {
-                  
+
                 $post_type_object = get_post_type_object($post_type);
                 $post_type_archive = get_post_type_archive_link($post_type);
-              
+
                 echo '<li class="item-cat item-custom-post-type-' . $post_type . '"><a class="bread-cat bread-custom-post-type-' . $post_type . '" href="' . $post_type_archive . '" title="' . $post_type_object->labels->name . '">' . $post_type_object->labels->name . '</a></li>';
-              
+
             }
-              
+
             $custom_tax_name = get_queried_object()->name;
             echo '<li class="item-current item-archive"><strong class="bread-current bread-archive">' . $custom_tax_name . '</strong></li>';
-              
+
         } else if ( is_single() ) {
-              
+
             // If post is a custom post type
             $post_type = get_post_type();
-              
+
             // If it is a custom post type display name and link
             if($post_type != 'post') {
-                  
+
                 $post_type_object = get_post_type_object($post_type);
                 $post_type_archive = get_post_type_archive_link($post_type);
-              
+
                 echo '<li class="item-cat item-custom-post-type-' . $post_type . '"><a class="bread-cat bread-custom-post-type-' . $post_type . '" href="' . $post_type_archive . '" title="' . $post_type_object->labels->name . '">' . $post_type_object->labels->name . '</a></li>';
-              
+
             }
-              
+
             // Get post category info
             $category = get_the_category();
-             
+
             if(!empty($category)) {
-              
+
                 // Get last category post is in
                 $last_category = end(array_values($category));
-                  
+
                 // Get parent any categories and create array
                 $get_cat_parents = rtrim(get_category_parents($last_category->term_id, true, ','),',');
                 $cat_parents = explode(',',$get_cat_parents);
-                  
+
                 // Loop through parent categories and store in variable $cat_display
                 $cat_display = '';
                 foreach($cat_parents as $parents) {
                     $cat_display .= '<li class="item-cat">'.$parents.'</li>';
                 }
-             
+
             }
-              
+
             // If it's a custom post type within a custom taxonomy
             $taxonomy_exists = taxonomy_exists($custom_taxonomy);
             if(empty($last_category) && !empty($custom_taxonomy) && $taxonomy_exists) {
-                   
+
                 $taxonomy_terms = get_the_terms( $post->ID, $custom_taxonomy );
                 $cat_id         = $taxonomy_terms[0]->term_id;
                 $cat_nicename   = $taxonomy_terms[0]->slug;
                 $cat_link       = get_term_link($taxonomy_terms[0]->term_id, $custom_taxonomy);
                 $cat_name       = $taxonomy_terms[0]->name;
-               
+
             }
-              
+
             // Check if the post is in a category
             if(!empty($last_category)) {
                 echo $cat_display;
                 echo '<li class="item-current item-' . $post->ID . '"><strong class="bread-current bread-' . $post->ID . '" title="' . get_the_title() . '">' . get_the_title() . '</strong></li>';
-                  
+
             // Else if post is in a custom taxonomy
             } else if(!empty($cat_id)) {
-                  
+
                 echo '<li class="item-cat item-cat-' . $cat_id . ' item-cat-' . $cat_nicename . '"><a class="bread-cat bread-cat-' . $cat_id . ' bread-cat-' . $cat_nicename . '" href="' . $cat_link . '" title="' . $cat_name . '">' . $cat_name . '</a></li>';
                 echo '<li class="item-current item-' . $post->ID . '"><strong class="bread-current bread-' . $post->ID . '" title="' . get_the_title() . '">' . get_the_title() . '</strong></li>';
-              
+
             } else {
-                  
+
                 echo '<li class="item-current item-' . $post->ID . '"><strong class="bread-current bread-' . $post->ID . '" title="' . get_the_title() . '">' . get_the_title() . '</strong></li>';
-                  
+
             }
-              
+
         } else if ( is_category() ) {
-               
+
             // Category page
             echo '<li class="item-current item-cat"><strong class="bread-current bread-cat">' . single_cat_title('', false) . '</strong></li>';
-               
+
         } else if ( is_page() ) {
-               
+
             // Standard page
             if( $post->post_parent ){
-                   
-                // If child page, get parents 
+
+                // If child page, get parents
                 $anc = get_post_ancestors( $post->ID );
-                   
+
                 // Get parents in the right order
                 $anc = array_reverse($anc);
-                   
+
                 // Parent page loop
                 foreach ( $anc as $ancestor ) {
                     $parents .= '<li class="item-parent item-parent-' . $ancestor . '"><a class="bread-parent bread-parent-' . $ancestor . '" href="' . get_permalink($ancestor) . '" title="' . get_the_title($ancestor) . '">' . get_the_title($ancestor) . '</a></li>';
                 }
-                   
+
                 // Display parent pages
                 echo $parents;
-                   
+
                 // Current page
                 echo '<li class="item-current item-' . $post->ID . '"><strong title="' . get_the_title() . '"> ' . get_the_title() . '</strong></li>';
-                   
+
             } else {
-                   
+
                 // Just display current page if not parents
                 echo '<li class="item-current item-' . $post->ID . '"><strong class="bread-current bread-' . $post->ID . '"> ' . get_the_title() . '</strong></li>';
-                   
+
             }
-               
+
         } else if ( is_tag() ) {
-               
+
             // Tag page
-               
+
             // Get tag information
             $term_id        = get_query_var('tag_id');
             $taxonomy       = 'post_tag';
@@ -675,69 +684,69 @@ function custom_breadcrumbs() {
             $get_term_id    = $terms[0]->term_id;
             $get_term_slug  = $terms[0]->slug;
             $get_term_name  = $terms[0]->name;
-               
+
             // Display the tag name
             echo '<li class="item-current item-tag-' . $get_term_id . ' item-tag-' . $get_term_slug . '"><strong class="bread-current bread-tag-' . $get_term_id . ' bread-tag-' . $get_term_slug . '">' . $get_term_name . '</strong></li>';
-           
+
         } elseif ( is_day() ) {
-               
+
             // Day archive
-               
+
             // Year link
             echo '<li class="item-year item-year-' . get_the_time('Y') . '"><a class="bread-year bread-year-' . get_the_time('Y') . '" href="' . get_year_link( get_the_time('Y') ) . '" title="' . get_the_time('Y') . '">' . get_the_time('Y') . ' Archives</a></li>';
-               
+
             // Month link
             echo '<li class="item-month item-month-' . get_the_time('m') . '"><a class="bread-month bread-month-' . get_the_time('m') . '" href="' . get_month_link( get_the_time('Y'), get_the_time('m') ) . '" title="' . get_the_time('M') . '">' . get_the_time('M') . ' Archives</a></li>';
-               
+
             // Day display
             echo '<li class="item-current item-' . get_the_time('j') . '"><strong class="bread-current bread-' . get_the_time('j') . '"> ' . get_the_time('jS') . ' ' . get_the_time('M') . ' Archives</strong></li>';
-               
+
         } else if ( is_month() ) {
-               
+
             // Month Archive
-               
+
             // Year link
             echo '<li class="item-year item-year-' . get_the_time('Y') . '"><a class="bread-year bread-year-' . get_the_time('Y') . '" href="' . get_year_link( get_the_time('Y') ) . '" title="' . get_the_time('Y') . '">' . get_the_time('Y') . ' Archives</a></li>';
-               
+
             // Month display
             echo '<li class="item-month item-month-' . get_the_time('m') . '"><strong class="bread-month bread-month-' . get_the_time('m') . '" title="' . get_the_time('M') . '">' . get_the_time('M') . ' Archives</strong></li>';
-               
+
         } else if ( is_year() ) {
-               
+
             // Display year archive
             echo '<li class="item-current item-current-' . get_the_time('Y') . '"><strong class="bread-current bread-current-' . get_the_time('Y') . '" title="' . get_the_time('Y') . '">' . get_the_time('Y') . ' Archives</strong></li>';
-               
+
         } else if ( is_author() ) {
-               
+
             // Auhor archive
-               
+
             // Get the author information
             global $author;
             $userdata = get_userdata( $author );
-               
+
             // Display author name
             echo '<li class="item-current item-current-' . $userdata->user_nicename . '"><strong class="bread-current bread-current-' . $userdata->user_nicename . '" title="' . $userdata->display_name . '">' . 'Author: ' . $userdata->display_name . '</strong></li>';
-           
+
         } else if ( get_query_var('paged') ) {
-               
+
             // Paginated archives
             echo '<li class="item-current item-current-' . get_query_var('paged') . '"><strong class="bread-current bread-current-' . get_query_var('paged') . '" title="Page ' . get_query_var('paged') . '">'.__('Page') . ' ' . get_query_var('paged') . '</strong></li>';
-               
+
         } else if ( is_search() ) {
-           
+
             // Search results page
             echo '<li class="item-current item-current-' . get_search_query() . '"><strong class="bread-current bread-current-' . get_search_query() . '" title="Search results for: ' . get_search_query() . '">Search results for: ' . get_search_query() . '</strong></li>';
-           
+
         } elseif ( is_404() ) {
-               
+
             // 404 page
             echo '<li>' . 'Error 404' . '</li>';
         }
-       
+
         echo '</ul>';
-           
+
     }
-       
+
 }
 
 function wc_ninja_remove_password_strength() {
@@ -756,7 +765,7 @@ add_action('admin_head', 'my_custom_fonts');
 
 function my_custom_fonts() {
   echo '<style>
-    li#toplevel_page_yit_plugin_panel, li#toplevel_page_bws_panel, li#toplevel_page_mailchimp-for-wp {
+    li#toplevel_page_yit_plugin_panel, li#toplevel_page_bws_panel {
 display:none !important;}
   </style>';
 }
@@ -864,7 +873,7 @@ function hs_locations_table_content( $column_name, $post_id ) {
 		$plain_address = get_post_meta( $post_id, 'plain_address', true );
 		if (get_field($plain_address))
 		echo $plain_address;
-		 else { 
+		 else {
 		$address = explode( "," , $location['address']);
 echo $address[0].'<br/>'; //place name
 echo $address[1].'<br/>'; // street address
@@ -996,7 +1005,7 @@ add_action('acf/init', 'my_acf_init');
 add_action('acf/init', 'my_acf_init2');
 function my_acf_init2() {
 if( function_exists('acf_add_options_page') ) {
-	
+
 	acf_add_options_page(array(
 		'page_title' 	=> 'Theme General Settings',
 		'menu_title'	=> 'Theme Settings',
@@ -1004,35 +1013,35 @@ if( function_exists('acf_add_options_page') ) {
 		'capability'	=> 'edit_posts',
 		'redirect'		=> false
 	));
-	
+
 	acf_add_options_sub_page(array(
 		'page_title' 	=> 'Theme Header Settings',
 		'menu_title'	=> 'Header',
 		'parent_slug'	=> 'theme-general-settings',
 	));
-	
+
 	acf_add_options_sub_page(array(
 		'page_title' 	=> 'Theme Footer Settings',
 		'menu_title'	=> 'Footer',
 		'parent_slug'	=> 'theme-general-settings',
 	));
-	
-	
+
+
 	acf_add_options_sub_page(array(
 		'page_title' 	=> 'Map Settings',
 		'menu_title'	=> 'Map Settings',
 		'parent_slug'	=> 'theme-general-settings',
 	));
-	
-	
-	
+
+
+
 	acf_add_options_sub_page(array(
 		'page_title' 	=> 'Product Video',
 		'menu_title'	=> 'Product Video',
 		'parent_slug'	=> 'theme-general-settings',
 	));
 
-	
+
 }
 }
 
@@ -1050,8 +1059,8 @@ $existing_mimes['vcf'] = 'text/x-vcard'; return $existing_mimes;
 }
 
 
-	
-	
+
+
 function is_tree($pid)
 {
   global $post;
@@ -1177,18 +1186,18 @@ add_filter('max_srcset_image_width', 'disable_wp_responsive_images');
 
 /* Add the following code in the theme's functions.php and disable any unset function as required */
 function remove_default_image_sizes( $sizes ) {
-  
+
   /* Default WordPress */
   unset( $sizes[ 'thumbnail' ]);       // Remove Thumbnail (150 x 150 hard cropped)
   unset( $sizes[ 'medium' ]);          // Remove Medium resolution (300 x 300 max height 300px)
   unset( $sizes[ 'medium_large' ]);    // Remove Medium Large (added in WP 4.4) resolution (768 x 0 infinite height)
   unset( $sizes[ 'large' ]);           // Remove Large resolution (1024 x 1024 max height 1024px)
-  
+
   /* With WooCommerce */
   unset( $sizes[ 'shop_thumbnail' ]);  // Remove Shop thumbnail (180 x 180 hard cropped)
   unset( $sizes[ 'shop_catalog' ]);    // Remove Shop catalog (300 x 300 hard cropped)
   unset( $sizes[ 'shop_single' ]);     // Shop single (600 x 600 hard cropped)
-  
+
   return $sizes;
 }
 
@@ -1196,18 +1205,18 @@ add_filter( 'intermediate_image_sizes_advanced', 'remove_default_image_sizes' );
 
 
 add_action( 'wp_enqueue_scripts', 'crunchify_disable_woocommerce_loading_css_js' );
- 
+
 function crunchify_disable_woocommerce_loading_css_js() {
-			wp_dequeue_style('woocommerce-layout'); 
-			wp_dequeue_style('woocommerce-general'); 
-			wp_dequeue_style('woocommerce-smallscreen'); 	
- 
+			wp_dequeue_style('woocommerce-layout');
+			wp_dequeue_style('woocommerce-general');
+			wp_dequeue_style('woocommerce-smallscreen');
+
 			wp_dequeue_script('wc-cart-fragments');
-			wp_dequeue_script('woocommerce'); 
-			wp_dequeue_script('wc-add-to-cart'); 
-		
+			wp_dequeue_script('woocommerce');
+			wp_dequeue_script('wc-add-to-cart');
+
 			wp_deregister_script( 'js-cookie' );
-			wp_dequeue_script( 'js-cookie' );	
+			wp_dequeue_script( 'js-cookie' );
 }
 
 
@@ -1258,3 +1267,239 @@ function create_post_type_faqs() {
 
 // Hook into the 'init' action
 add_action('init', 'create_post_type_faqs');
+
+
+add_action('wp_footer', function(){
+?>
+    <div class="hidden d-none">
+        <section class="section blog clearfix">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 post-content m-left">
+                        <div class="clearfix">
+                            <?php
+                            $args = array(
+                                'post_type'      => 'locations',
+                                'posts_per_page' => 30,
+                                'post_status'    => 'publish',
+                                'meta_key'       => 'location_directory',
+                                'meta_value'     => 'No'
+                            );
+                            $query = new WP_Query( $args );
+                            $posts = $query->get_posts();
+                            $output2 = array();
+                            foreach( $posts as $post ) {
+                                $location = get_field('address', $post->ID);
+                                $email = get_field('email_address', $post->ID);
+                                $phone = get_field('phone_number', $post->ID);
+                                $fax = get_field('fax_number', $post->ID);
+                                $google = get_field('google_plus', $post->ID);
+                                $locations = get_field('address', $post->ID);
+                                $locations = explode( "," , $locations['address']);
+
+                                $place = $locations[0].''; //place name
+                                $street = $locations[1].''; // street address
+                                $city = $locations[2].''.$locations[3]; // city, state zip
+                                $link = get_the_permalink();
+                                $output2[] = array( 'place' => $place, 'street' => $street, 'city' => $city, 'id' =>$post->ID, 'name' =>$post->post_title, 'lat' =>$location['lat'], 'lng' =>$location['lng'],'address' =>$location['address'], 'email' =>$email, 'phone' =>$phone, 'fax' =>$fax, 'category' =>'page','link'=>$link,'web'=>$google);
+                            }
+                            ?>
+                            <script id="listTemplate" type="text/x-handlebars-template">
+                            {{#location}}
+                            <li data-markerid="{{markerid}}" class="clearfix">
+                                <div class="list-label" style="display:none;">{{marker}}</div>
+                                <div class="list-details single-result clearfix">
+                                    <div class="col-sm-4 nmp text-left">
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                            <tbody><tr>
+                                            <td valign="top" align="left" width="45"><img src="<?php echo get_template_directory_uri();?>/store/assets/img/crown.png"></td>
+                                            <td valign="top" align="left">
+                                            <h2>Sky King Of</h2>
+                                            <p style="margin-bottom:0;"><strong><a href="{{link}}" style="font-size:21px;" class="title">{{name}}</a></strong><br>
+                                            <div class="loc-addr">{{place}}<br>{{street}} {{city}}</div>
+                                            {{#if phone}}<div class="loc-phone">Phone: <a href="tel:{{phone}}">{{phone}}</a></div>{{/if}}
+                                            {{#if fax}}<div class="loc-fax">Fax: <a href="tel:{{fax}}">{{fax}}</a></div>{{/if}}
+                                            {{#if email}}<div class="loc-email">Email: <a href="mailto:{{email}}">{{email}}</a></div>{{/if}}
+                                            {{#if web}}Find us on <a href="{{web}}" target="_blank">Google Plus</a></td>{{/if}}
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                <div class="col-sm-4 nmp text-left">
+                                <h2>Distance</h2>
+
+                                {{#if distance}}
+                                            <div class="loc-dist">
+                                            {{distance}} {{length}}
+                                            <p style="margin-bottom:0;color:#ffb400;">Show on Map</p>
+                                            </div>
+                                            <div class="loc-directions"><a href="https://maps.google.com/maps?saddr={{origin}}&amp;daddr={{address}} {{address2}} {{city}}, {{state}} {{postal}}" target="_blank">Directions</a></div>
+                                        {{/if}}
+                                        </div>
+                                <div class="col-sm-4 nmp text-left">
+                                <h2>Details</h2>
+                                <div class="loc-link"><a href="{{link}}">View this location</a></div>
+                                </div>
+
+                                    <div class="list-content hidden">
+                                        <div class="loc-name">{{name}}</div>
+                                        <div class="loc-addr">{{address}}</div>
+                                        <div class="loc-addr2">{{address2}}</div>
+                                        <div class="loc-addr3">{{city}}{{#if city}},{{/if}} {{state}} {{postal}}</div>
+                                        <div class="loc-phone">Phone: <a href="tel:{{phone}}">{{phone}}</a></div>
+                                        <div class="loc-fax">Fax: <a href="mailto:{{fax}}">{{fax}}</a></div>
+                                        <div class="loc-email">Email: <a href="mailto:{{email}}">{{email}}</a></div>
+                                        <div class="loc-link"><a href="{{link}}">More Details</a></div>
+                                        <div class="loc-webs"><a href="{{web}}" target="_blank">{{web}}</a></div>
+                                        {{#if distance}}
+                                            <div class="loc-dist">{{distance}} {{length}}</div>
+                                            <div class="loc-directions"><a href="https://maps.google.com/maps?saddr={{origin}}&amp;daddr={{address}} {{address2}} {{city}}, {{state}} {{postal}}" target="_blank">Directions</a></div>
+                                        {{/if}}
+                                    </div>
+                                </div>
+                            </li>
+                            <option value="{{name}}">{{name}} {{distance}} {{length}}</option>
+                            {{/location}}
+                            </script>
+                            <script id="infowindowTemplate" type="text/x-handlebars-template">
+                            {{#location}}
+                                <div class="list-details">
+                                    <div class="list-content">
+                                        <p style="margin-bottom:0;"><strong><a href="{{link}}" style="font-size:21px;" class="title">Skyking of {{name}}</a></strong><br>
+                                        <div class="loc-addr">{{place}}<br>{{street}} {{city}}</div>
+                                        {{#if phone}}<div class="loc-phone">Phone: <a href="tel:{{phone}}">{{phone}}</a></div>{{/if}}
+                                        {{#if fax}}<div class="loc-fax">Fax: <a href="tel:{{fax}}">{{fax}}</a></div>{{/if}}
+                                        {{#if email}}<div class="loc-email">Email: <a href="mailto:{{email}}">{{email}}</a></div>{{/if}}
+                                        {{#if web}}Find us on <a href="{{web}}" target="_blank">Google Plus</a></td>{{/if}}
+                                        {{#if distance}}
+                                            <div class="loc-dist">Distance: {{distance}} {{length}}</div>
+                                            <div class="loc-directions">Directions: <a href="https://maps.google.com/maps?saddr={{origin}}&amp;daddr={{address}} {{address2}} {{city}}, {{state}} {{postal}}" target="_blank">Directions</a></div>
+                                        {{/if}}
+                                        <div class="loc-link">Details: <a href="{{link}}">View this location</a></div>
+                                    </div>
+                            {{/location}}
+                            </script>
+                            <div class="bh-sl-container locator-form">
+                                <div id="page-header">
+                                    <h1 class="bh-sl-title hidden">20 LOCATIONS ACROSS FLORIDA, GEORGIA, PENNSYLVANIA & INDIANA</h1>
+                                            <h2 class="bh-sl-title">Find a store</h2>
+                                </div>
+
+                                <div class="bh-sl-form-container simple-locator-form">
+                                    <form id="bh-sl-user-location" method="post" action="#">
+                                        <div class="form-input address-input form-field">
+                                            <input type="text" id="bh-sl-address" name="bh-sl-address" placeholder="Enter a city and state or postal code" autocomplete="off" />
+                                        </div>
+                                        <select id="bh-sl-maxdistance" name="bh-sl-maxdistance">
+                                            <option value="10000" selected="selected">10000 Miles</option>
+                                        </select>
+                                        <div class="submit">
+                                        <button id="bh-sl-submit" type="submit">Find a store</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div id="bh-sl-map-container" class="bh-sl-map-container">
+                                    <div id="bh-sl-map" class="bh-sl-map"></div>
+                                    <div class="bh-sl-loc-list">
+                                        <ul class="list"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script>
+        (function($) {
+            $('#bh-sl-address').val('');
+            $('#bh-sl-map-container').storeLocator({
+                'mapSettings' : {
+                    zoom :12,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP,
+                    zoomControl:true,
+                    disableDoubleClickZoom:false,
+                    scaleControl:true,
+                    scrollwheel:true,
+                    navigationControl: false,
+                    draggable:true
+                },
+                'distanceAlert':500,
+                callbackListClick: function(){
+                 $('html, body').animate({scrollTop:$("#bh-sl-map-container").offset().top - 80}, 800);
+                },
+                'inlineDirections':false,
+                'dataType': 'json',
+                'dataRaw': <?php echo json_encode($output2); ?>,
+                'querystringParams' : true,
+                'listTemplateID': 'listTemplate',
+                'infowindowTemplateID': 'infowindowTemplate',
+                'slideMap' : false,
+                'modal' :false,
+                'maxDistance':true,
+                'defaultLoc':false,
+                'defaultLat': '44.9207462',
+                'defaultLng' : '-93.3935366',
+                'autoGeocode':false,
+                'catMarkers' : {
+                    'page': ['<?php echo the_field('map_crown', 'option');?>', 69, 86],
+                }
+            });
+            // footer form type
+            $(document).on('keyup', '#ftzip', function() {
+                var leng = $(this).val().length;
+                if(leng > 4) {
+                    $('input#bh-sl-address').val($(this).val());
+                    $('form#bh-sl-user-location').submit();
+                    $("#ftziplocation").addClass("loading").find('option').remove();
+                    setTimeout(function() {
+                        $(".hidden.d-none ul.list option:lt(5)").each(function(i) {
+                            $(this).clone().appendTo("#ftziplocation");
+                            // location page changes
+                            if( $('body').hasClass('post-type-archive') ){
+                                $('#ftziplocation option').map(function(index, elem) {
+                                    $(elem).removeClass('hide');
+                                });
+                            }
+                        });
+                    },2000);
+                }
+            });
+        }(jQuery));
+    </script>
+    <style type="text/css">
+        .hide {display: none; }
+    </style>
+<?php
+}, 11);
+
+// filter to update the subscriber tags
+add_filter( 'mc4wp_subscriber_data', function(MC4WP_MailChimp_Subscriber $subscriber) {
+    $title = $subscriber->merge_fields['STORE'];
+    if( empty($title) ){
+        return $subscriber;
+    }
+    $args = array(
+        'post_type'      => 'locations',
+        'posts_per_page' => 1,
+        'post_status'    => 'publish',
+        'meta_key'       => 'location_directory',
+        'meta_value'     => 'No',
+        "s"              => $title
+    );
+    $query    = new WP_Query( $args );
+    $posts    = $query->get_posts();
+    $location = get_field('address', $posts[0]->ID);
+    $address  = $location['address'];
+    if( empty( $address ) ){
+        return $subscriber;
+    }
+	
+	$locations = explode( "," , $address);
+	$statewdzip = $locations[2]; 
+	$states = explode(" ", $statewdzip);
+	$city = $locations[1].', '.$states[1]; // city, state 
+    $subscriber->tags[] = $city;
+    return $subscriber;
+},100 , 1);
